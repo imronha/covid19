@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  CardMedia,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 
 import styles from "./News.module.css";
 import cx from "classnames";
@@ -61,11 +55,3 @@ const News = ({ data }) => {
 };
 
 export default News;
-
-{
-  /* <CardMedia
-className={styles.cardImage}
-src={article.urlToImage}
-title="Paella dish"
-></CardMedia> */
-}
