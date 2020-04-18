@@ -6,7 +6,9 @@ import cx from "classnames";
 
 const News = ({ data }) => {
   console.log(data);
-
+  if (!data) {
+    return "Loading...";
+  }
   return (
     <div className={styles.container}>
       <Grid container spacing={2} justify="center">
