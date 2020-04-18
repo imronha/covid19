@@ -4,7 +4,7 @@ new Date();
 
 const covidUrl = "https://covid19.mathdro.id/api";
 const newsUrl =
-  "http://newsapi.org/v2/everything?" +
+  "https://newsapi.org/v2/everything?" +
   "q=covid-19&" +
   "from=2020-04-18&" +
   "sortBy=popularity&" +
