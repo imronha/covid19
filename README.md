@@ -1,68 +1,127 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[COVID19 Tracker Live Demo](https://condescending-lamport-cf54b7.netlify.app/)
 
-## Available Scripts
+# COVID19 Tracker
 
-In the project directory, you can run:
+COVID-19 tracker designed to showcase current coronavirus cases worldwide using React.js, Material UI, chartjs-2, axios, react-countup, News API, COVID-19 API by visualizing data and serving current news.
 
-### `yarn start`
+## Technologies Used:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* ReactJS
+* JavaScript
+* HTML/CSS
+* Chartjs-2
+* Axios
+* React-countup
+* News API
+* COVID-19 API
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Features:
 
-### `yarn test`
+![COVID19 Gif](COVID19Tracker.gif)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Data can be visualized through a line graph or bar chart created with chartjs2 and can sort information by global numbers or by nation. Separate News component showcases current news related to COVID-19.
 
-### `yarn build`
+### Global view
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Users can see a dashboard of current infections, recovered, and deaths worldwide on a line graph using data from the COVID19 API.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```Javascript
+    <Line
+      data={{
+        labels: dailyData.map(({ date }) => date),
+        datasets: [
+          {
+            data: dailyData.map(({ confirmed }) => confirmed),
+            label: "Infected",
+            borderColor: "#838EFF",
+            fill: true,
+          },
+          {
+            data: dailyData.map(({ deaths }) => deaths),
+            label: "Deaths",
+            borderColor: "red",
+            backgroundColor: "#FF848B",
+            fill: true,
+          },
+        ],
+      }}
+    />
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Country picker component
 
-### `yarn eject`
+Users can select a country and view fetched data in a bar chart view.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```Javascript
+const CountryPicker = ({ handleCountryChange }) => {
+  const [fetchedCountries, setFetchedCountries] = useState([]);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setFetchedCountries(await fetchCountries());
+    };
+    fetchAPI();
+  }, [setFetchedCountries]);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  // console.log(fetchedCountries);
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  return (
+    <FormControl className={styles.formControl}>
+      <NativeSelect
+        defaultValue=""
+        onChange={(e) => {
+          handleCountryChange(e.target.value);
+        }}
+      >
+        <option value="">Global</option>
+        {fetchedCountries.map((country, i) => (
+          <option key={i} value={country}>
+            {country}
+          </option>
+        ))}
+      </NativeSelect>
+    </FormControl>
+  );
+};
+```
 
-## Learn More
+### Bar Chart view for countries
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Users can see a dashboard of current infections, recovered, and deaths for selected countries.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```Javascript
+ const barChart = confirmed ? (
+    <Bar
+      data={{
+        labels: ["Infected", "Recovered", "Deaths"],
+        datasets: [
+          {
+            label: "People",
+            backgroundColor: [
+              "rgba(0, 0, 255, 0.5)",
+              "rgba(0, 255, 0, 0.5)",
+              "rgba(255, 0, 0, 0.5)",
+            ],
+            data: [confirmed.value, recovered.value, deaths.value],
+          },
+        ],
+      }}
+      options={{
+        legend: { display: true },
+        title: { display: true, text: `Current state in ${country}` },
+      }}
+    />
+  ) : null;
 
-### Code Splitting
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
+## Features to implement in next iterations
+* More chart views
+* Comparision data to other infetious diseases
+* Different resources for news, such as video
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+## Known issues
+* News articles no longer being fetched
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
